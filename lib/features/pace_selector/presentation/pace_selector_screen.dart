@@ -32,7 +32,7 @@ class PaceSelectorScreen extends ConsumerWidget {
             showTopNotification(
               context,
               '${LocaleKeys.pace_selector_network_error.tr()}: $err',
-              isError: true,
+              type: TopNotificationType.error,
             );
           },
         );
@@ -88,7 +88,7 @@ class PaceSelectorScreen extends ConsumerWidget {
                           onMinutesChanged: paceNotifier.updateMinutes,
                           onSecondsChanged: paceNotifier.updateSeconds,
                         ),
-                        const SizedBox(height: 24),
+                        const SizedBox(height: 32),
                         LevelBadge(activeLevel: paceState.swimmerLevel),
                         const SizedBox(height: 24),
                         PaceSlider(

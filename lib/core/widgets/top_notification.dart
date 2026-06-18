@@ -2,62 +2,73 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:swim_success/core/constants/app_colors.dart';
 
-void showTopNotification(BuildContext context, String message, {bool isError = false}) {
+enum TopNotificationType {
+  success(
+    color: AppColors.successStatus,
+    icon: Icons.check_circle_outline_rounded,
+  ),
+  error(
+    color: AppColors.errorStatus,
+    icon: Icons.error_outline_rounded,
+  );
+
+  const TopNotificationType({required this.color, required this.icon});
+
+  final Color color;
+  final IconData icon;
+}
+
+void showTopNotification(
+    BuildContext context,
+    String message, {
+      TopNotificationType type = TopNotificationType.success,
+    }) {
   final overlay = Overlay.of(context);
   late OverlayEntry entry;
+  Timer? timer;
+
+  void dismiss() {
+    timer?.cancel();
+    if (entry.mounted) entry.remove();
+  }
 
   entry = OverlayEntry(
     builder: (context) => _TopNotificationWidget(
       message: message,
-      isError: isError,
-      onDismiss: () => entry.remove(),
+      type: type,
+      onDismiss: dismiss,
     ),
   );
 
   overlay.insert(entry);
-
-  Timer(const Duration(seconds: 3), () {
-    if (entry.mounted) {
-      entry.remove();
-    }
-  });
+  timer = Timer(const Duration(seconds: 3), dismiss);
 }
 
 class _TopNotificationWidget extends StatefulWidget {
-  final String message;
-  final bool isError;
-  final VoidCallback onDismiss;
-
   const _TopNotificationWidget({
     required this.message,
-    required this.isError,
+    required this.type,
     required this.onDismiss,
   });
+
+  final String message;
+  final TopNotificationType type;
+  final VoidCallback onDismiss;
 
   @override
   State<_TopNotificationWidget> createState() => _TopNotificationWidgetState();
 }
 
 class _TopNotificationWidgetState extends State<_TopNotificationWidget> with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<Offset> _offsetAnimation;
+  late final _controller = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 350),
+  )..forward();
 
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 350),
-    );
-    _offsetAnimation = Tween<Offset>(
-      begin: const Offset(0.0, -1.5),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeOutBack,
-    ));
-    _controller.forward();
-  }
+  late final _slideAnimation = Tween<Offset>(
+    begin: const Offset(0.0, -1.5),
+    end: Offset.zero,
+  ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutBack));
 
   @override
   void dispose() {
@@ -67,45 +78,37 @@ class _TopNotificationWidgetState extends State<_TopNotificationWidget> with Sin
 
   void _dismiss() {
     _controller.reverse().then((_) {
-      if (mounted) {
-        widget.onDismiss();
-      }
+      if (mounted) widget.onDismiss();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final topPadding = MediaQuery.of(context).padding.top;
-
     return Positioned(
-      top: topPadding + 16,
+      top: MediaQuery.of(context).padding.top + 16,
       left: 16,
       right: 16,
       child: SlideTransition(
-        position: _offsetAnimation,
+        position: _slideAnimation,
         child: Material(
           color: Colors.transparent,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: widget.isError ? AppColors.errorStatus : AppColors.successStatus,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.25),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: widget.type.color,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.25),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               child: Row(
                 children: [
-                  Icon(
-                    widget.isError ? Icons.error_outline_rounded : Icons.check_circle_outline_rounded,
-                    color: Colors.white,
-                    size: 22,
-                  ),
+                  Icon(widget.type.icon, color: Colors.white, size: 22),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(

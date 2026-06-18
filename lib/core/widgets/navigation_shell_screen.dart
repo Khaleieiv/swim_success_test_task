@@ -5,49 +5,71 @@ import '../router/app_router.dart';
 import '../theme/app_theme.dart';
 import '../../../generated/locale_keys.g.dart';
 
-class NavigationShellScreen extends StatelessWidget {
-  final Widget child;
+class _NavItem {
+  const _NavItem({
+    required this.route,
+    required this.icon,
+    required this.activeIcon,
+    required this.labelKey,
+    this.exactMatch = false,
+  });
 
+  final String route;
+  final IconData icon;
+  final IconData activeIcon;
+  final String labelKey;
+  final bool exactMatch;
+
+  bool matches(String path) => exactMatch ? path == route : path.startsWith(route);
+}
+
+class NavigationShellScreen extends StatelessWidget {
   const NavigationShellScreen({
     super.key,
     required this.child,
   });
 
-  int _calculateSelectedIndex(BuildContext context) {
-    final location = GoRouterState.of(context).uri.path;
-    if (location.startsWith(AppRouter.userList)) return 1;
-    return 0;
-  }
+  final Widget child;
 
-  void _onItemTapped(int index, BuildContext context) {
-    switch (index) {
-      case 0:
-        context.go(AppRouter.paceSelector);
-        break;
-      case 1:
-        context.go(AppRouter.userList);
-        break;
-    }
+  static const _items = [
+    _NavItem(
+      exactMatch: true,
+      route: AppRouter.paceSelector,
+      icon: Icons.timer_outlined,
+      activeIcon: Icons.timer,
+      labelKey: LocaleKeys.pace_selector_tab_title,
+    ),
+    _NavItem(
+      route: AppRouter.userList,
+      icon: Icons.people_outline_rounded,
+      activeIcon: Icons.people_rounded,
+      labelKey: LocaleKeys.user_list_tab_title,
+    ),
+  ];
+
+  int _selectedIndex(BuildContext context) {
+    final path = GoRouterState.of(context).uri.path;
+    final index = _items.indexWhere((item) => item.matches(path));
+    return index < 0 ? 0 : index;
   }
 
   @override
   Widget build(BuildContext context) {
-    final selectedIndex = _calculateSelectedIndex(context);
+    final selectedIndex = _selectedIndex(context);
 
     return Scaffold(
       body: child,
-      bottomNavigationBar: Container(
+      bottomNavigationBar: DecoratedBox(
         decoration: BoxDecoration(
           border: Border(
             top: BorderSide(
               color: context.colorScheme.onSurface.withValues(alpha: 0.08),
-              width: 1,
             ),
           ),
         ),
         child: BottomNavigationBar(
           currentIndex: selectedIndex,
-          onTap: (index) => _onItemTapped(index, context),
+          onTap: (index) => context.go(_items[index].route),
           backgroundColor: context.colorScheme.surface,
           selectedItemColor: context.colorScheme.primary,
           unselectedItemColor: context.colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
@@ -55,18 +77,13 @@ class NavigationShellScreen extends StatelessWidget {
           unselectedLabelStyle: const TextStyle(fontSize: 12),
           type: BottomNavigationBarType.fixed,
           elevation: 0,
-          items: [
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.timer_outlined),
-              activeIcon: const Icon(Icons.timer),
-              label: LocaleKeys.pace_selector_tab_title.tr(),
-            ),
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.people_outline_rounded),
-              activeIcon: const Icon(Icons.people_rounded),
-              label: LocaleKeys.user_list_tab_title.tr(),
-            ),
-          ],
+          items: _items.map((tab) {
+            return BottomNavigationBarItem(
+              icon: Icon(tab.icon),
+              activeIcon: Icon(tab.activeIcon),
+              label: tab.labelKey.tr(),
+            );
+          }).toList(),
         ),
       ),
     );
