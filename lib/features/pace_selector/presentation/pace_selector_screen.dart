@@ -25,13 +25,13 @@ class PaceSelectorScreen extends ConsumerWidget {
           data: (_) {
             showTopNotification(
               context,
-              'Pace submitted successfully!',
+              LocaleKeys.pace_selector_submit_success.tr(),
             );
           },
           error: (err, _) {
             showTopNotification(
               context,
-              '${'Network error occurred!'}: $err',
+              '${LocaleKeys.pace_selector_network_error.tr()}: $err',
               isError: true,
             );
           },
@@ -41,7 +41,7 @@ class PaceSelectorScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: CommonAppBar(
-        title: 'Pace',
+        title: LocaleKeys.pace_selector_tab_title.tr(),
         showBackButton: false,
         showActions: true,
       ),
@@ -64,7 +64,7 @@ class PaceSelectorScreen extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
-                          'What\'s your fastest 100m freestyle?',
+                          LocaleKeys.pace_selector_title.tr(),
                           style: context.textTheme.headlineMedium?.copyWith(
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
@@ -74,7 +74,7 @@ class PaceSelectorScreen extends ConsumerWidget {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'This helps us build a more accurate plan for you.',
+                          LocaleKeys.pace_selector_subtitle.tr(),
                           style: context.textTheme.bodyMedium?.copyWith(
                             color: context.colorScheme.onSurfaceVariant,
                             fontSize: 15,
@@ -118,7 +118,7 @@ class PaceSelectorScreen extends ConsumerWidget {
                                   ),
                                 )
                               : Text(
-                                  'Continue',
+                                  LocaleKeys.pace_selector_continue.tr(),
                                   style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,

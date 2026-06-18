@@ -1,0 +1,45 @@
+{
+  "pace_selector": {
+    "title": "What's your fastest 100m freestyle?",
+    "subtitle": "This helps us build a more accurate plan for you.",
+    "pace": "YOUR PACE",
+    "min": "MIN",
+    "sec": "SEC",
+    "level_prefix": "THAT PUTS YOU AT",
+    "tab_title": "Pace",
+    "levels": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced",
+      "elite": "Elite"
+    },
+    "continue": "Continue",
+    "skip": "I don't know my pace, skip this",
+    "loading": "Loading...",
+    "submit_success": "Pace submitted successfully!",
+    "network_error": "Network error occurred!"
+  },
+  "user_list": {
+    "title": "Users",
+    "tab_title": "Users",
+    "search_placeholder": "Search by name...",
+    "email": "Email",
+    "phone": "Phone",
+    "website": "Website",
+    "company": "Company",
+    "address": "Address",
+    "no_users": "No users found",
+    "retry": "Retry",
+    "catch_phrase": "Catch Phrase",
+    "business": "Business",
+    "contact_info": "Contact Info",
+    "street": "Street",
+    "city": "City",
+    "zipcode": "Zipcode",
+    "coordinates": "Coordinates",
+    "company_name": "Company Name",
+    "lat": "Lat",
+    "lng": "Lng",
+    "error_loading_details": "Error loading details"
+  }
+}

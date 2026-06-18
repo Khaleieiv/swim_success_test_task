@@ -18,8 +18,9 @@ class PaceSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const swimmerLevelEliteMax = '1:10';
-    const swimmerLevelAdvancedMax = '1:10';
-    const swimmerLevelIntermediateMax = '1:10';
+    const swimmerLevelAdvancedMax = '1:30';
+    const swimmerLevelIntermediateMax = '2:00';
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [

@@ -59,9 +59,9 @@ class TimeDisplay extends StatelessWidget {
               color: context.colorScheme.onSurfaceVariant,
             ),
             children: [
-              TextSpan(text: 'MIN'),
+              TextSpan(text: LocaleKeys.pace_selector_min.tr()),
               TextSpan(text: '    :    '),
-              TextSpan(text: 'SEC'),
+              TextSpan(text: LocaleKeys.pace_selector_sec.tr()),
               TextSpan(text: '    /    '),
               TextSpan(text: distance),
             ],

@@ -32,7 +32,7 @@ class _UserListScreenState extends ConsumerState<UserListScreen> {
 
     return Scaffold(
       appBar: CommonAppBar(
-        title: 'Users',
+        title: LocaleKeys.user_list_title.tr(),
         showBackButton: false,
         showActions: true,
       ),
@@ -73,7 +73,7 @@ class _UserListScreenState extends ConsumerState<UserListScreen> {
                                   ),
                                   const SizedBox(height: 16),
                                   Text(
-                                    'No users found',
+                                    LocaleKeys.user_list_no_users.tr(),
                                     style: context.textTheme.bodyMedium?.copyWith(
                                       color: context.colorScheme.onSurfaceVariant,
                                     ),
@@ -128,7 +128,7 @@ class _UserListScreenState extends ConsumerState<UserListScreen> {
                                   ref.read(userListNotifierProvider.notifier).refresh();
                                 },
                                 icon: const Icon(Icons.refresh_rounded),
-                                label: Text('Retry'),
+                                label: Text(LocaleKeys.user_list_retry.tr()),
                               ),
                             ],
                           ),

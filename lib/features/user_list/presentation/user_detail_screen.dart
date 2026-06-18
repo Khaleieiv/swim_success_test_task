@@ -21,7 +21,7 @@ class UserDetailScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: CommonAppBar(
-        title: 'Users',
+        title: LocaleKeys.user_list_title.tr(),
         showBackButton: true,
         showActions: true,
         onBack: () => context.pop(),
@@ -72,40 +72,40 @@ class UserDetailScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 24),
                   _DetailCard(
-                    title: 'Contact Info',
+                    title: LocaleKeys.user_list_contact_info.tr(),
                     icon: Icons.contact_page_outlined,
                     children: [
-                      _DetailRow(icon: Icons.email_outlined, label: 'Email', value: user.email),
-                      _DetailRow(icon: Icons.phone_outlined, label: 'Phone', value: user.phone),
-                      _DetailRow(icon: Icons.language_rounded, label: 'Website', value: user.website),
+                      _DetailRow(icon: Icons.email_outlined, label: LocaleKeys.user_list_email.tr(), value: user.email),
+                      _DetailRow(icon: Icons.phone_outlined, label: LocaleKeys.user_list_phone.tr(), value: user.phone),
+                      _DetailRow(icon: Icons.language_rounded, label: LocaleKeys.user_list_website.tr(), value: user.website),
                     ],
                   ),
                   const SizedBox(height: 16),
                   _DetailCard(
-                    title: 'Company',
+                    title: LocaleKeys.user_list_company.tr(),
                     icon: Icons.business_outlined,
                     children: [
-                      _DetailRow(icon: Icons.storefront_outlined, label: 'Company Name', value: user.company.name),
-                      _DetailRow(icon: Icons.star_border_rounded, label: 'Catch Phrase', value: user.company.catchPhrase),
-                      _DetailRow(icon: Icons.work_outline_rounded, label: 'Business', value: user.company.bs),
+                      _DetailRow(icon: Icons.storefront_outlined, label: LocaleKeys.user_list_company_name.tr(), value: user.company.name),
+                      _DetailRow(icon: Icons.star_border_rounded, label: LocaleKeys.user_list_catch_phrase.tr(), value: user.company.catchPhrase),
+                      _DetailRow(icon: Icons.work_outline_rounded, label: LocaleKeys.user_list_business.tr(), value: user.company.bs),
                     ],
                   ),
                   const SizedBox(height: 16),
                   _DetailCard(
-                    title: 'Address',
+                    title: LocaleKeys.user_list_address.tr(),
                     icon: Icons.location_on_outlined,
                     children: [
                       _DetailRow(
                         icon: Icons.home_outlined,
-                        label: 'Street',
+                        label: LocaleKeys.user_list_street.tr(),
                         value: '${user.address.suite}, ${user.address.street}',
                       ),
-                      _DetailRow(icon: Icons.location_city_outlined, label: 'City', value: user.address.city),
-                      _DetailRow(icon: Icons.markunread_mailbox_outlined, label: 'Zipcode', value: user.address.zipcode),
+                      _DetailRow(icon: Icons.location_city_outlined, label: LocaleKeys.user_list_city.tr(), value: user.address.city),
+                      _DetailRow(icon: Icons.markunread_mailbox_outlined, label: LocaleKeys.user_list_zipcode.tr(), value: user.address.zipcode),
                       _DetailRow(
                         icon: Icons.map_outlined,
-                        label: 'Coordinates',
-                        value: '${'Lat'}: ${user.address.geo.lat}, ${'Lng'}: ${user.address.geo.lng}',
+                        label: LocaleKeys.user_list_coordinates.tr(),
+                        value: '${LocaleKeys.user_list_lat.tr()}: ${user.address.geo.lat}, ${LocaleKeys.user_list_lng.tr()}: ${user.address.geo.lng}',
                       ),
                     ],
                   ),
@@ -116,7 +116,7 @@ class UserDetailScreen extends ConsumerWidget {
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (err, _) => Center(
             child: Text(
-              '${'Error loading details'}: $err',
+              '${LocaleKeys.user_list_error_loading_details.tr()}: $err',
               style: TextStyle(color: context.colorScheme.error),
             ),
           ),

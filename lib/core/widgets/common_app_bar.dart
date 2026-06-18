@@ -34,7 +34,7 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: showBackButton
           ? Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Container(
+              child: DecoratedBox(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(

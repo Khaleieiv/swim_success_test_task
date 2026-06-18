@@ -28,7 +28,7 @@ class LevelBadge extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          'THAT PUTS YOU AT',
+          LocaleKeys.pace_selector_level_prefix.tr(),
           style: context.textTheme.bodyMedium?.copyWith(
             fontSize: 11,
             letterSpacing: 1.5,
@@ -46,7 +46,7 @@ class LevelBadge extends StatelessWidget {
             );
           },
           child: Text(
-            activeLevel.name[0].toUpperCase() + activeLevel.name.substring(1),
+            activeLevel.translationKey.tr(),
             key: ValueKey<SwimmerLevel>(activeLevel),
             style: context.textTheme.headlineMedium?.copyWith(
               fontSize: 24,
@@ -71,7 +71,7 @@ class LevelBadge extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        level.name[0].toUpperCase() + level.name.substring(1),
+                        level.translationKey.tr(),
                         textAlign: TextAlign.center,
                         maxLines: 2,
                         style: context.textTheme.bodyMedium?.copyWith(

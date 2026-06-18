@@ -59,12 +59,12 @@ class NavigationShellScreen extends StatelessWidget {
             BottomNavigationBarItem(
               icon: const Icon(Icons.timer_outlined),
               activeIcon: const Icon(Icons.timer),
-              label: 'Pace',
+              label: LocaleKeys.pace_selector_tab_title.tr(),
             ),
             BottomNavigationBarItem(
               icon: const Icon(Icons.people_outline_rounded),
               activeIcon: const Icon(Icons.people_rounded),
-              label: 'Users',
+              label: LocaleKeys.user_list_tab_title.tr(),
             ),
           ],
         ),

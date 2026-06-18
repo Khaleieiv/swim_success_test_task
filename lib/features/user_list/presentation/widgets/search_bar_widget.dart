@@ -31,7 +31,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
     return TextField(
       controller: _controller,
       decoration: InputDecoration(
-        hintText: 'Search by name...',
+        hintText: LocaleKeys.user_list_search_placeholder.tr(),
         prefixIcon: const Icon(Icons.search_rounded),
         suffixIcon: _controller.text.isNotEmpty
             ? IconButton(
