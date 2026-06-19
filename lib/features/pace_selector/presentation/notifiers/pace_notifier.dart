@@ -41,15 +41,9 @@ class PaceState {
 class PaceNotifier extends _$PaceNotifier {
   static const _defaultMinutes = 1;
   static const _defaultSeconds = 30;
-  static const _submitDebounce = Duration(milliseconds: 500);
-
-  Timer? _debounceTimer;
 
   @override
   PaceState build() {
-    ref.onDispose(() {
-      _debounceTimer?.cancel();
-    });
     return const PaceState(minutes: _defaultMinutes, seconds: _defaultSeconds);
   }
 
@@ -84,25 +78,9 @@ class PaceNotifier extends _$PaceNotifier {
       seconds: secs,
       submitStatus: const AsyncValue.data(null),
     );
-
-    // Debounce API call on slider change
-    _debounceTimer?.cancel();
-    _debounceTimer = Timer(_submitDebounce, () {
-      _submitQuietly();
-    });
-  }
-
-  Future<void> _submitQuietly() async {
-    final repository = ref.read(paceRepositoryProvider);
-    try {
-      await repository.submitPace(state.totalSeconds);
-    } catch (e) {
-      debugPrint('Debounced pace submit failed: $e');
-    }
   }
 
   Future<void> submit() async {
-    _debounceTimer?.cancel();
     state = state.copyWith(submitStatus: const AsyncValue.loading());
 
     try {
