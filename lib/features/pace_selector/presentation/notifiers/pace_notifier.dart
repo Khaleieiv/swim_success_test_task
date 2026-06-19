@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../core/constants/swimmer_levels.dart';
 import '../../data/pace_repository.dart';
 import '../../domain/swimmer_level.dart';
 
 part 'pace_notifier.g.dart';
+
+const _secondsPerMinute = 60;
 
 class PaceState {
   final int minutes;
@@ -17,7 +20,7 @@ class PaceState {
     this.submitStatus = const AsyncValue.data(null),
   });
 
-  int get totalSeconds => minutes * 60 + seconds;
+  int get totalSeconds => minutes * _secondsPerMinute + seconds;
 
   SwimmerLevel get swimmerLevel => SwimmerLevel.fromSeconds(totalSeconds);
 
@@ -36,6 +39,10 @@ class PaceState {
 
 @riverpod
 class PaceNotifier extends _$PaceNotifier {
+  static const _defaultMinutes = 1;
+  static const _defaultSeconds = 30;
+  static const _submitDebounce = Duration(milliseconds: 500);
+
   Timer? _debounceTimer;
 
   @override
@@ -43,37 +50,35 @@ class PaceNotifier extends _$PaceNotifier {
     ref.onDispose(() {
       _debounceTimer?.cancel();
     });
-    return const PaceState(minutes: 1, seconds: 30);
+    return const PaceState(minutes: _defaultMinutes, seconds: _defaultSeconds);
   }
 
   void updateMinutes(int minutes) {
     final clampedMins = minutes.clamp(PaceConstants.minMinutes, PaceConstants.maxMinutes);
-    var newTotal = clampedMins * 60 + state.seconds;
-    newTotal = newTotal.clamp(PaceConstants.minTotalSeconds, PaceConstants.maxTotalSeconds);
-
-    state = state.copyWith(
-      minutes: newTotal ~/ 60,
-      seconds: newTotal % 60,
-      submitStatus: const AsyncValue.data(null),
-    );
+    _updateTotalSeconds(clampedMins * _secondsPerMinute + state.seconds);
   }
 
   void updateSeconds(int seconds) {
     final clampedSecs = seconds.clamp(PaceConstants.minSeconds, PaceConstants.maxSeconds);
-    var newTotal = state.minutes * 60 + clampedSecs;
-    newTotal = newTotal.clamp(PaceConstants.minTotalSeconds, PaceConstants.maxTotalSeconds);
+    _updateTotalSeconds(state.minutes * _secondsPerMinute + clampedSecs);
+  }
 
+  void _updateTotalSeconds(int totalSeconds) {
+    final clamped = totalSeconds.clamp(
+      PaceConstants.minTotalSeconds,
+      PaceConstants.maxTotalSeconds,
+    );
     state = state.copyWith(
-      minutes: newTotal ~/ 60,
-      seconds: newTotal % 60,
+      minutes: clamped ~/ _secondsPerMinute,
+      seconds: clamped % _secondsPerMinute,
       submitStatus: const AsyncValue.data(null),
     );
   }
 
   void updateFromSlider(double totalSecondsValue) {
     final totalSeconds = totalSecondsValue.round().clamp(PaceConstants.minTotalSeconds, PaceConstants.maxTotalSeconds);
-    final mins = totalSeconds ~/ 60;
-    final secs = totalSeconds % 60;
+    final mins = totalSeconds ~/ _secondsPerMinute;
+    final secs = totalSeconds % _secondsPerMinute;
     state = state.copyWith(
       minutes: mins,
       seconds: secs,
@@ -82,7 +87,7 @@ class PaceNotifier extends _$PaceNotifier {
 
     // Debounce API call on slider change
     _debounceTimer?.cancel();
-    _debounceTimer = Timer(const Duration(milliseconds: 500), () {
+    _debounceTimer = Timer(_submitDebounce, () {
       _submitQuietly();
     });
   }
@@ -91,15 +96,17 @@ class PaceNotifier extends _$PaceNotifier {
     final repository = ref.read(paceRepositoryProvider);
     try {
       await repository.submitPace(state.totalSeconds);
-    } catch (_) {}
+    } catch (e) {
+      debugPrint('Debounced pace submit failed: $e');
+    }
   }
 
   Future<void> submit() async {
     _debounceTimer?.cancel();
     state = state.copyWith(submitStatus: const AsyncValue.loading());
 
-    final repository = ref.read(paceRepositoryProvider);
     try {
+      final repository = ref.read(paceRepositoryProvider);
       await repository.submitPace(state.totalSeconds);
       state = state.copyWith(submitStatus: const AsyncValue.data(null));
     } catch (e, stackTrace) {

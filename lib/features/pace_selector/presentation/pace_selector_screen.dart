@@ -5,6 +5,7 @@ import '../../../core/theme/app_theme.dart';
 import '../../../core/widgets/common_app_bar.dart';
 import '../../../core/widgets/top_notification.dart';
 import '../../../generated/locale_keys.g.dart';
+import '../../../core/utils/error_handler.dart';
 import 'notifiers/pace_notifier.dart';
 import 'widgets/level_badge.dart';
 import 'widgets/pace_slider.dart';
@@ -31,7 +32,7 @@ class PaceSelectorScreen extends ConsumerWidget {
           error: (err, _) {
             showTopNotification(
               context,
-              '${LocaleKeys.pace_selector_network_error.tr()}: $err',
+              ErrorHandler.getLocalizedMessage(err),
               type: TopNotificationType.error,
             );
           },

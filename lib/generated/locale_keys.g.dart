@@ -43,5 +43,9 @@ abstract class  LocaleKeys {
   static const user_list_lng = 'user_list.lng';
   static const user_list_error_loading_details = 'user_list.error_loading_details';
   static const user_list = 'user_list';
+  static const errors_no_internet = 'errors.no_internet';
+  static const errors_network_error = 'errors.network_error';
+  static const errors_unknown = 'errors.unknown';
+  static const errors = 'errors';
 
 }

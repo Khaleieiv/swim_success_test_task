@@ -41,5 +41,12 @@
     "lat": "Lat",
     "lng": "Lng",
     "error_loading_details": "Error loading details"
+  },
+  "errors": {
+    "no_internet": "No internet connection. Please check your connection and try again.",
+    "network_error": "A network error occurred. Please try again later.",
+    "unknown": "An unexpected error occurred. Please try again.",
+    "config_error_title": "Configuration Error",
+    "config_error_desc": "A critical configuration file is missing. Please contact support."
   }
 }

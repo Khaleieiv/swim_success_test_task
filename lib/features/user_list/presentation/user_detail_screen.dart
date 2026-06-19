@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../core/utils/error_handler.dart';
 import 'notifiers/user_list_notifier.dart';
 import '../../../core/widgets/common_app_bar.dart';
 import '../../../generated/locale_keys.g.dart';
@@ -115,9 +116,13 @@ class UserDetailScreen extends ConsumerWidget {
           },
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (err, _) => Center(
-            child: Text(
-              '${LocaleKeys.user_list_error_loading_details.tr()}: $err',
-              style: TextStyle(color: context.colorScheme.error),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                ErrorHandler.getLocalizedMessage(err),
+                textAlign: TextAlign.center,
+                style: TextStyle(color: context.colorScheme.error),
+              ),
             ),
           ),
         ),

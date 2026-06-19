@@ -57,6 +57,11 @@ class CodegenLoader extends AssetLoader{
     "lat": "Lat",
     "lng": "Lng",
     "error_loading_details": "Error loading details"
+  },
+  "errors": {
+    "no_internet": "No internet connection. Please check your connection and try again.",
+    "network_error": "A network error occurred. Please try again later.",
+    "unknown": "An unexpected error occurred. Please try again."
   }
 };
 static const Map<String,dynamic> _ru = {
@@ -102,6 +107,11 @@ static const Map<String,dynamic> _ru = {
     "lat": "Шир",
     "lng": "Долг",
     "error_loading_details": "Ошибка загрузки деталей"
+  },
+  "errors": {
+    "no_internet": "Нет интернет-соединения. Пожалуйста, проверьте подключение к сети и попробуйте еще раз.",
+    "network_error": "Произошла сетевая ошибка. Пожалуйста, попробуйте еще раз позже.",
+    "unknown": "Произошла непредвиденная ошибка. Пожалуйста, попробуйте еще раз."
   }
 };
 static const Map<String,dynamic> _uk = {
@@ -147,6 +157,11 @@ static const Map<String,dynamic> _uk = {
     "lat": "Шир",
     "lng": "Довг",
     "error_loading_details": "Помилка завантаження деталей"
+  },
+  "errors": {
+    "no_internet": "Немає інтернет-з'єднання. Будь ласка, перевірте підключення до мережі та спробуйте ще раз.",
+    "network_error": "Сталася помилка мережі. Будь ласка, спробуйте ще раз пізніше.",
+    "unknown": "Сталася непередбачена помилка. Будь ласка, спробуйте ще раз."
   }
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"en": _en, "ru": _ru, "uk": _uk};

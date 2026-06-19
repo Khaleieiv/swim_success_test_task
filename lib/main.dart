@@ -1,10 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'core/theme/theme_provider.dart';
+import 'core/widgets/config_error_app.dart';
 import 'generated/codegen_loader.g.dart';
 
 void main() async {
@@ -14,7 +16,13 @@ void main() async {
   // Load environment variables
   try {
     await dotenv.load(fileName: '.env');
-  } catch (_) {}
+  } catch (error) {
+    if (kReleaseMode) {
+      runApp(const ConfigErrorApp());
+      return;
+    }
+    assert(false, 'Failed to load .env: $error');
+  }
 
   runApp(
     ProviderScope(

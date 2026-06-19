@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/router/app_router.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../core/utils/error_handler.dart';
 import 'notifiers/user_list_notifier.dart';
 import 'widgets/user_card.dart';
 import 'widgets/search_bar_widget.dart';
@@ -116,7 +117,7 @@ class _UserListScreenState extends ConsumerState<UserListScreen> {
                               ),
                               const SizedBox(height: 16),
                               Text(
-                                error.toString(),
+                                ErrorHandler.getLocalizedMessage(error),
                                 textAlign: TextAlign.center,
                                 style: context.textTheme.bodyMedium?.copyWith(
                                   color: context.colorScheme.error,
